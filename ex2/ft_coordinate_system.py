@@ -6,7 +6,7 @@
 #  By: stmaire <stmaire@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/02/16 14:49:43 by stmaire         #+#    #+#               #
-#  Updated: 2026/02/16 17:51:26 by stmaire         ###   ########.fr        #
+#  Updated: 2026/02/16 18:07:13 by stmaire         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -73,9 +73,9 @@ def display_coordinate_system() -> None:
         
         print(f'Parsing coordinates: "{data[2]}"')
         parsed_coord = parsing_coordinates(data[2])
-        print(f"Parsed position: {parsed_coord(data[2])}")
-        distance = calculate_distance(data[0], parsed_coord(data[2]))
-        print(f"Distance between {data[0]} and {parsed_coord(data[2])}: {distance:.2f}\n")
+        print(f"Parsed position: {parsed_coord}")
+        distance = calculate_distance(data[0], parsed_coord)
+        print(f"Distance between {data[0]} and {parsed_coord}: {distance:.2f}\n")
 
         print(f'Parsing invalid coordinates: "{data[3]}"')
         parsing_coordinates(data[3])
