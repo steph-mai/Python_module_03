@@ -6,7 +6,7 @@
 #    By: stmaire <stmaire@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/17 14:47:21 by stmaire           #+#    #+#              #
-#    Updated: 2026/02/17 18:00:56 by stmaire          ###   ########.fr        #
+#    Updated: 2026/02/17 18:06:12 by stmaire          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -101,6 +101,9 @@ def ft_get_items_categories(inventory: dict[str, int]) -> None:
 
 # TODO
 #  === Management Suggestions ===
+
+
+
 # Restock needed: ['sword', 'helmet']
 # === Dictionary Properties Demo ===
 # Dictionary keys: sword, potion, shield, armor, helmet
