@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    ft_inventory_system.py                             :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: stmaire <stmaire@student.42.fr>            +#+  +:+       +#+         #
+#    By: steph <steph@student.42.fr>                +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2026/02/17 14:47:21 by stmaire           #+#    #+#              #
-#    Updated: 2026/02/17 18:00:56 by stmaire          ###   ########.fr        #
+#    Updated: 2026/02/18 09:39:35 by steph            ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -14,6 +14,7 @@ import sys
 
 def ft_parsing_args() -> dict[str, int] | None:
     """Check the arguments received in command line and return a dictionnary"""
+    
     if len(sys.argv) < 2:
         print("No argument provided. "
               "Usage: python3 ft_inventory_system.py <category1>:<quantity1> <category2>:<quantity2> ...")
@@ -38,21 +39,38 @@ def ft_parsing_args() -> dict[str, int] | None:
             print("Invalid format")
             print("Usage: python3 ft_inventory_system.py <category1>:<quantity1> <category2>:<quantity2> ...")
             return None
-    print(f"{inventory}")
     return inventory
+    
+
+def ft_inventory_system(inventory: dict[str, int]):
+    """Display an analysis and some statistics about inventory system"""
+    print("=== Inventory System Analysis ===")
+    total = 0
+    for value in inventory.values():
+        total += value
+    print(f"Total items in inventory: {total}")     
+    print(f"Unique item types: {len(inventory)}")
 
 
 def ft_sort_by_abundance(inventory: dict[str, int]) -> None:
-    """Sort by value (bubble sort) and display in function of resources quantities"""
+    """Sort and display inventory based on resource quantities
+    
+    Uses a bubble sort algorithm.
+    Sort the inventory by quantity (descending) and then by name (ascending)
+    for items with the same quantity
+    """
     
     print("\n=== Current Inventory ===")
-    items = list(inventory.items()) #method will return each item in a dictionary, as tuples in a list.
+    items = list(inventory.items())
     
     size = len(items)
     for i in range(size):
         for j in range(0, size - i - 1):
             if items[j][1] < items[j+1][1]:
                 items[j], items[j+1] = items[j+1], items[j]
+            elif items[j][1] == items[j+1][1]:
+                if items[j][0] > items[j+1][0]:
+                    items[j], items[j+1] = items[j+1], items[j]
 
     total = 0
     for value in inventory.values():
@@ -72,13 +90,23 @@ def ft_sort_by_abundance(inventory: dict[str, int]) -> None:
 
     print("\n=== Inventory Statistics ===")   
     max_value = items[0][1]
+    if max_value > 1:
+        max_unit_label = "units"
+    else:
+        max_unit_label = "unit"
     min_value = items[size - 1][1]
-    print(f"Most abundant: {items[0][0]} ({items[0][1]} {unit_label})")
-    print(f"Least abundant: {items[size -1][0]} ({items[size -1][1]} {unit_label})")
-
-
+    if min_value > 1:
+        min_unit_label = "units"
+    else:
+        min_unit_label = "unit"
+    
+    print(f"Most abundant: {items[0][0]} ({max_value} {max_unit_label})")
+    print(f"Least abundant: {items[size -1][0]} ({min_value} {min_unit_label})")
+    
+    
 def ft_get_items_categories(inventory: dict[str, int]) -> None:
     """Create nested dictionaries in order to handle and display abundancy"""
+    
     categories = {
         "Abundant" : {},        
         "Moderate" : {},
@@ -99,27 +127,49 @@ def ft_get_items_categories(inventory: dict[str, int]) -> None:
         if len(items_dict) > 0:
             print(f"{category}: {items_dict}")
 
-# TODO
-#  === Management Suggestions ===
-# Restock needed: ['sword', 'helmet']
-# === Dictionary Properties Demo ===
-# Dictionary keys: sword, potion, shield, armor, helmet
-# Dictionary values: 1, 5, 2, 3, 1
-# Sample lookup - 'sword' in inventory: True 
 
-def ft_inventory_system(inventory: dict[str, int]):
-    """Display an analysis and some statistics about inventory system"""
-    print("=== Inventory System Analysis ===")
-    total = 0
+    print("\n=== Management Suggestions ===")
+    restock_needed= []
+    for name, qty in categories["Scarce"].items():
+        if qty < 2:
+            restock_needed += [name]
+    print(f"Restock needed: {restock_needed} ")
+
+    
+def ft_properties_demo(inventory: dict[str, int]) -> None:
+    """Displays dictionary properties"""
+    
+    print("\n=== Dictionary Properties Demo ===")
+    print(f"Dictionary keys: ", end="")
+    size = len(inventory)
+    count = 0
+    for key in inventory.keys():
+        count += 1
+        if count == size:
+            print(f"{key}")
+        else:
+            print(f"{key}, ", end="")
+
+    print(f"Dictionary values: ", end="")
+    count = 0
     for value in inventory.values():
-        total += value
-    print(f"Total items in inventory: {total}")     
-    print(f"Unique item types: {len(inventory)}")
+        count += 1
+        if count == size:
+            print(f"{value}")
+        else:
+            print(f"{value}, ", end="")
     
-    ft_sort_by_abundance(inventory)
-    
+    lookup = False
+    name = "sword"
+    if name in inventory:
+        lookup = True
+    print(f"Sample lookup - '{name}' in inventory: {lookup}")
+  
                
 if __name__ == "__main__":
     inventory = ft_parsing_args()
-    ft_inventory_system(inventory)
-    ft_get_items_categories(inventory)
+    if inventory is not None:
+        ft_inventory_system(inventory)
+        ft_sort_by_abundance(inventory)
+        ft_get_items_categories(inventory)
+        ft_properties_demo(inventory)
