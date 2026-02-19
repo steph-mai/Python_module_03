@@ -6,7 +6,7 @@
 #  By: stmaire <stmaire@student.42.fr>           +#+  +:+       +#+         #
 #                                              +#+#+#+#+#+   +#+            #
 #  Created: 2026/02/18 10:54:39 by stmaire         #+#    #+#               #
-#  Updated: 2026/02/18 15:41:45 by stmaire         ###   ########.fr        #
+#  Updated: 2026/02/19 13:57:23 by stmaire         ###   ########.fr        #
 #                                                                           #
 # ************************************************************************* #
 
@@ -14,7 +14,7 @@ from typing import Generator
 import time
 
 
-def generate_events(n: int) -> Generator[dict, None, None]:
+def generate_events(n: int) -> Generator[dict[str, int | str], None, None]:
     """Generate event dictionaries"""
 
     players = [
@@ -35,7 +35,7 @@ def generate_events(n: int) -> Generator[dict, None, None]:
         ]
 
     for i in range(0, n):
-        event: dict = {
+        event: dict[str, int | str] = {
             "id": i + 1,
             "player": players[i % len(players)],
             "level": i * 7 % 17 + 1,
@@ -58,10 +58,10 @@ def ft_data_stream_processor() -> None:
     level_up_events = 0
 
     for event in generate_events(total_events):
-        if event["id"] <= 3:
+        if int(event["id"]) <= 3:
             print(f"Event {event['id']}: Player {event['player']} "
                   f"(level {event['level']}) {event['action']}")
-        if event["level"] >= 10:
+        if int(event["level"]) >= 10:
             high_level_players += 1
         if event["action"] == "found treasure":
             treasure_events += 1
