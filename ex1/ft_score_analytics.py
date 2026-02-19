@@ -27,7 +27,7 @@ def ft_score_analytics() -> None:
     try:
         for i in range(1, (len(sys.argv))):
             score = int(sys.argv[i])
-            scores.append(score)
+            scores += [score]
     except ValueError:
         print(f"Error: '{sys.argv[i]}' is not a valid number")
         return
